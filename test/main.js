@@ -16,6 +16,8 @@ requirejs.config({
   baseUrl: '/base/build/dev',
 
   paths: {
+    'jquery': 'lib/jquery/dist/jquery',
+    'react': 'lib/react/react',
   },
 
   shim: {

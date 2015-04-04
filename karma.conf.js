@@ -22,6 +22,9 @@ module.exports = function(config) {
       {pattern: 'test/**/*spec.js', included: false},
       {pattern: 'test/**/*test.js', included: false},
       'test/main.js',
+
+      // necessary to add missing ES5 functions (needed by React)
+      './node_modules/phantomjs-polyfill/bind-polyfill.js',
     ],
 
 

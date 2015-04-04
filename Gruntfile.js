@@ -4,9 +4,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-react');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -120,6 +122,14 @@ module.exports = function(grunt) {
       },
     },
 
+    react: {
+      dev: {
+        files: [
+          {expand: true, cwd: 'app', src: ['**/*.jsx'], dest: 'build/dev', ext: '.js'},
+        ],
+      }
+    },
+
     sass: {
       dev: {
         files: [
@@ -144,6 +154,7 @@ module.exports = function(grunt) {
         files: [
           'app/**/*.html',
           'app/**/*.js',
+          'app/**/*.jsx',
           'test/**/*.js',
           'package.json',
           'Gruntfile.js',
@@ -159,6 +170,16 @@ module.exports = function(grunt) {
           'bower.json',
         ],
         tasks: ['clean', 'build:dev', 'test', 'jshint'],
+      },
+    },
+
+    requirejs: {
+      compile: {
+        options: {
+          name: 'main',
+          mainConfigFile: 'build/dev/main.js',
+          out: 'build/dist/main.js',
+        },
       },
     },
   });
@@ -177,6 +198,12 @@ module.exports = function(grunt) {
   grunt.registerTask(
     'build:dev',
     'build the source, install third party libs, yield client side app, in full',
-    ['clean', 'copy', 'sass:dev', 'bower:install']
+    ['clean', 'copy', 'react', 'sass:dev', 'bower:install']
+  );
+
+  grunt.registerTask(
+    'build:dist',
+    'build the app for production',
+    ['build:dev', 'requirejs', 'sass:dist', 'copy:dist']
   );
 };
