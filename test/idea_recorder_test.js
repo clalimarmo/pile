@@ -1,14 +1,19 @@
 define(function(require) {
   var $ = require('jquery');
+  var React = require('react');
+  var TestUtils = React.addons.TestUtils;
+  var Simulate = TestUtils.Simulate;
   var IdeaRecorderView = require('idea_recorder_view');
 
   describe('IdeaRecorder', function() {
     var mocks;
+    var input;
 
     beforeEach(function() {
       mocks = {};
 
       mocks.element = $('<div>');
+
       mocks.recordedIdeas = [];
       mocks.ideas = {
         record: function(idea) {
@@ -16,27 +21,24 @@ define(function(require) {
         },
       };
 
-      mocks.pressEnterEvent = $.Event('keydown');
-      mocks.pressEnterEvent.which = 13;
-
       IdeaRecorderView({
         element: mocks.element,
         ideas: mocks.ideas
       });
+
+      input = mocks.element.find('input').get(0);
     });
 
     it('records ideas', function() {
-      var input = $(mocks.element.find('input'));
-      input.val('blue whales are the biggest');
-      input.trigger(mocks.pressEnterEvent);
+      input.value = 'blue whales are the biggest';
+      Simulate.keyDown(input, {key: 'Enter'});
       expect(mocks.recordedIdeas).to.include('blue whales are the biggest');
     });
 
     it('resets when an idea is recorded', function() {
-      var input = $(mocks.element.find('input'));
-      input.val('blue whales are the biggest');
-      input.trigger(mocks.pressEnterEvent);
-      expect(input.val()).to.be.empty;
+      input.value = 'blue whales are the biggest';
+      Simulate.keyDown(input, {key: 'Enter'});
+      expect(input.value).to.be.empty;
     });
   });
 });

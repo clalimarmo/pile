@@ -1,5 +1,6 @@
 define(function(require) {
   var ensure = require('ensure');
+  var normalizeElement = require('normalize_element');
   var React = require('react');
 
   var component = React.createClass({
@@ -34,16 +35,6 @@ define(function(require) {
 
       updateIdeas();
       deps.ideas.onChange(updateIdeas);
-    };
-
-    var normalizeElement = function(e) {
-      if (e.get instanceof Function) {
-        return deps.element.get(0);
-      } else if (deps.element instanceof HTMLElement) {
-        return e;
-      }
-
-      throw 'element should be jquery result set or HTMLElement';
     };
 
     var updateIdeas = function() {
