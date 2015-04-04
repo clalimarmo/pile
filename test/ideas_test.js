@@ -13,8 +13,8 @@ define(function(require) {
       ideas.record('Rice makes me full, very fast');
 
       expect(ideas.all()).to.deep.eq([
-        'I need to eat more',
         'Rice makes me full, very fast',
+        'I need to eat more',
       ]);
     });
 

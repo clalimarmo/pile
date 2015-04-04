@@ -8,7 +8,7 @@ define(function(require) {
     var onChangeCallbacks = Callbacks();
 
     instance.record = function(idea) {
-      ideas.push(idea);
+      ideas.unshift(idea);
       onChangeCallbacks.execute();
     };
 
