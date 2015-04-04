@@ -1,0 +1,22 @@
+#idea-recorder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+
+  text-align: center;
+  label {
+    display: block;
+    color: #ccc;
+    margin: 10px;
+  }
+  input {
+    font-size: 1.2em;
+    display: inline-block;
+    text-align: center;
+    width: 600px;
+  }
+}

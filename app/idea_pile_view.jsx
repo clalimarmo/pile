@@ -8,7 +8,9 @@ define(function(require) {
       var ideas = [];
       if (this.state && this.state.ideas) {
         this.state.ideas.forEach(function(idea) {
-          ideas.push(<div>{idea}</div>);
+          ideas.push(
+            <div className="idea">{idea}</div>
+          );
         });
       }
 

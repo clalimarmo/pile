@@ -7,6 +7,7 @@ define(function(require) {
     render: function() {
       return (
         <div className="idea-recorder">
+          <label>enter an idea</label>
           <input type="text" onKeyDown={this.props.onKeyDown} />
         </div>
       );
