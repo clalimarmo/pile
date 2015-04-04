@@ -41,4 +41,4 @@ Run a development build, with auto-rebuilds, with
 
 ### Production Builds
 
-    # TODO
+    grunt build:dist
