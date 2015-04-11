@@ -1,0 +1,24 @@
+@mixin display-flex {
+  display: -webkit-flex;
+  display: flex;
+}
+@mixin flex($val) {
+  -webkit-flex: $val;
+  flex: $val;
+}
+@mixin flex-flow($val) {
+  -webkit-flex-flow: $val;
+  flex-flow: $val;
+}
+@mixin justify-content($val) {
+  -webkit-justify-content: $val;
+  justify-content: $val;
+}
+@mixin align-items($val) {
+  -webkit-align-items: $val;
+  align-items: $val;
+}
+@mixin flex-shrink($val) {
+  -webkit-flex-shrink: $val;
+  flex-shrink: $val;
+}

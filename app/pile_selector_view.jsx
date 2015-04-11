@@ -52,10 +52,12 @@ define(function(require) {
       var component = this;
 
       return (
-        <ul>
-          <li className="add-pile" onClick={this.props.addPile}>Add Pile</li>
-          {renderPiles()}
-        </ul>
+        <div className="pile-selector">
+          <ul>
+            {renderPiles()}
+          </ul>
+          <div className="add-pile" onClick={this.props.addPile}>Add Pile</div>
+        </div>
       );
 
       function renderPiles() {
