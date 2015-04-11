@@ -7,9 +7,9 @@ define(function(require) {
     render: function() {
       var ideas = [];
       if (this.state && this.state.ideas) {
-        this.state.ideas.forEach(function(idea) {
+        this.state.ideas.forEach(function(idea, index) {
           ideas.push(
-            <div className="idea">{idea}</div>
+            <div key={idea + index} className="idea">{idea}</div>
           );
         });
       }
@@ -37,10 +37,11 @@ define(function(require) {
 
       updateIdeas();
       deps.ideas.onIdeasChanged(updateIdeas);
+      deps.ideas.onCurrentPileChanged(updateIdeas);
     };
 
     var updateIdeas = function() {
-      reactElement.setState({ideas: deps.ideas.all()});
+      reactElement.setState({ideas: deps.ideas.inCurrentPile()});
     };
 
     init();

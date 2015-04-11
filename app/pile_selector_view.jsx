@@ -3,7 +3,42 @@ define(function(require) {
   var normalizeElement = require('normalize_element');
   var React = require('react');
 
-  var component = React.createClass({
+  var MISC_KEY = 'misc-undefined-3y8241903740139287491207843912078349012374';
+
+  var PileSelectorView = function(deps) {
+    ensure(['element', 'ideas'], deps);
+
+    var reactElement;
+
+    function init() {
+      var container = normalizeElement(deps.element);
+      var componentProps = {
+        ideas: deps.ideas,
+        choosePile: choosePileHandler,
+      };
+      reactElement = React.render(
+        React.createElement(Component, componentProps),
+        container
+      );
+
+      updatePiles();
+      deps.ideas.onPilesChanged(updatePiles);
+    };
+
+    function updatePiles() {
+      reactElement.setState({piles: deps.ideas.pileNames()});
+    };
+
+    function choosePileHandler(pile) {
+      return function() {
+        deps.ideas.usePile(pile);
+      };
+    };
+
+    init();
+  };
+
+  var Component = React.createClass({
     render: function() {
       var component = this;
 
@@ -19,11 +54,11 @@ define(function(require) {
           component.state.piles.forEach(function(pile) {
             if (pile === undefined) {
               piles.push(
-                <li key={undefined}>Misc</li>
+                <li key={MISC_KEY} onClick={component.props.choosePile(undefined)}>Misc</li>
               );
             } else {
               piles.push(
-                <li key={pile}>{pile}</li>
+                <li key={pile} onClick={component.props.choosePile(pile)}>{pile}</li>
               );
             }
           });
@@ -33,28 +68,5 @@ define(function(require) {
     },
   });
 
-  var PileSelectorView = function(deps) {
-    ensure(['element', 'ideas'], deps);
-
-    var reactElement;
-
-    var init = function() {
-      var container = normalizeElement(deps.element);
-
-      reactElement = React.render(
-        React.createElement(component, {ideas: deps.ideas}),
-        container
-      );
-
-      updatePiles();
-      deps.ideas.onPilesChanged(updatePiles);
-    };
-
-    var updatePiles = function() {
-      reactElement.setState({piles: deps.ideas.pileNames()});
-    };
-
-    init();
-  };
   return PileSelectorView;
 });

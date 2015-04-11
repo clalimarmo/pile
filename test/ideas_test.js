@@ -12,7 +12,7 @@ define(function(require) {
       ideas.record('I need to eat more');
       ideas.record('Rice makes me full, very fast');
 
-      expect(ideas.all()).to.deep.eq([
+      expect(ideas.in()).to.deep.eq([
         'Rice makes me full, very fast',
         'I need to eat more',
       ]);
@@ -24,6 +24,35 @@ define(function(require) {
         callbackCalled = true;
       });
       ideas.record('something');
+      expect(callbackCalled).to.be.true;
+    });
+
+    it('selects piles for recording ideas', function() {
+      ideas.usePile('chicken');
+      ideas.record('bird food');
+      ideas.record('poop');
+      expect(ideas.in('chicken')).to.deep.eq([
+        'poop',
+        'bird food',
+      ]);
+      expect(ideas.inCurrentPile()).to.deep.eq(ideas.in('chicken'));
+    });
+
+    it('registers callbacks for when the current pile changes', function() {
+      var callbackCalled = 'callback called?';
+      ideas.onCurrentPileChanged(function() {
+        callbackCalled = true;
+      });
+      ideas.usePile('something else');
+      expect(callbackCalled).to.be.true;
+    });
+
+    it('registers callbacks for when the piles change', function() {
+      var callbackCalled = 'callback called?';
+      ideas.onPilesChanged(function() {
+        callbackCalled = true;
+      });
+      ideas.usePile('something new');
       expect(callbackCalled).to.be.true;
     });
 

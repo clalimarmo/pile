@@ -3,18 +3,33 @@ define(function(require) {
 
   var Ideas = function() {
     var instance = {};
-    var ideas = [];
+    var ideas = {};
+    var currentPile;
 
     var onIdeasChanged = Callbacks();
     var onPilesChanged = Callbacks();
+    var onCurrentPileChanged = Callbacks();
+
+    var init = function() {
+      instance.usePile(undefined);
+    };
 
     instance.record = function(idea) {
-      ideas.unshift(idea);
+      ideas[currentPile].unshift(idea);
       onIdeasChanged.execute();
     };
 
-    instance.all = function() {
-      return ideas;
+    instance.in = function(pile) {
+      return ideas[pile];
+    };
+
+    instance.usePile = function(pile) {
+      if (!(ideas[pile] instanceof Array)) {
+        ideas[pile] = [];
+        onPilesChanged.execute();
+      }
+      currentPile = pile;
+      onCurrentPileChanged.execute();
     };
 
     instance.pileNames = function() {
@@ -45,9 +60,15 @@ define(function(require) {
       ];
     };
 
+    instance.inCurrentPile = function() {
+      return ideas[currentPile];
+    };
+
     instance.onIdeasChanged = onIdeasChanged.register;
     instance.onPilesChanged = onPilesChanged.register;
+    instance.onCurrentPileChanged = onCurrentPileChanged.register;
 
+    init();
     return instance;
   };
   return Ideas;
