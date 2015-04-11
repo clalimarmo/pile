@@ -77,5 +77,11 @@
   .current-pile {
     margin: 10px 0;
     text-align: center;
+    .match {
+      color: #000;
+    }
+    .non-match {
+      color: #ccc;
+    }
   }
 }

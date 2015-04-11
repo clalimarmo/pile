@@ -77,7 +77,7 @@ define(function(require) {
       );
 
       function renderCurrentPile() {
-        return (<h1 className="current-pile">{component.state.currentPile}</h1>);
+        return (<h1 className="current-pile">{pileText(component.state.currentPile)}</h1>);
       }
 
       function renderFilteredPiles() {

@@ -103,6 +103,14 @@ define(function(require) {
         expect(filterMatches.text()).to.eq('rink');
       });
 
+      it('distinguishes matching substrings in the current pile', function() {
+        Simulate.change(filter, {target: {value: 'chi'}});
+        var currentPile = $(mocks.element.find('.current-pile'));
+        var filterMatches = currentPile.find('.match');
+        expect(filterMatches.length).to.eq(1);
+        expect(filterMatches.text()).to.eq('chi');
+      });
+
       describe('querying and pressing enter', function() {
         it('selects the only match', function() {
           Simulate.change(filter, {target: {value: 'lor'}});
