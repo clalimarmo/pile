@@ -1,12 +1,10 @@
 body > footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  @include display-flex;
+  @include flex-flow(row nowrap);
+  @include justify-content(flex-end);
   border-top: 1px solid #eee;
   background-color: #fff;
-  width: 100%;
-  text-align: center;
-  padding: 20px;
+  padding: 10px;
   h1 {
     display: inline-block;
     font-size: 1em;

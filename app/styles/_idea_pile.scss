@@ -1,6 +1,16 @@
 #idea-pile {
-  text-align: center;
-  .idea {
-    padding: 10px;
+  @include display-flex;
+  @include flex(1);
+  > * {
+    @include display-flex;
+    @include flex(1);
+    @include flex-flow(column nowrap);
+    @include align-items(center);
+    overflow: auto;
+    .idea {
+      @include display-flex;
+      @include flex-shrink(0);
+      padding: 10px;
+    }
   }
 }
