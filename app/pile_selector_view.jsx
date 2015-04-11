@@ -7,7 +7,7 @@ define(function(require) {
   var MISC_TEXT = 'Misc';
 
   var PileSelectorView = function(deps) {
-    ensure(['element', 'ideas'], deps);
+    ensure(['element', 'ideas', 'pileCreator'], deps);
 
     var reactElement;
 
@@ -16,6 +16,7 @@ define(function(require) {
       var componentProps = {
         ideas: deps.ideas,
         choosePile: choosePileHandler,
+        addPile: deps.pileCreator.summon,
       };
       reactElement = React.render(
         React.createElement(Component, componentProps),
@@ -24,6 +25,8 @@ define(function(require) {
 
       updatePiles();
       deps.ideas.onPilesChanged(updatePiles);
+
+      showCurrentPile();
       deps.ideas.onCurrentPileChanged(showCurrentPile);
     };
 
@@ -50,6 +53,7 @@ define(function(require) {
 
       return (
         <ul>
+          <li className="add-pile" onClick={this.props.addPile}>Add Pile</li>
           {renderPiles()}
         </ul>
       );
@@ -69,15 +73,9 @@ define(function(require) {
           'pile': true,
           'current-pile': component.state.currentPile === pile,
         });
-        var key = pile;
-        var text = pile;
-        if (pile === undefined) {
-          key = MISC_KEY;
-          text = MISC_TEXT;
-        }
         return(
-          <li key={key} onClick={component.props.choosePile(pile)} className={classes}>
-          {text}
+          <li key={pile} onClick={component.props.choosePile(pile)} className={classes}>
+            {pile}
           </li>
         );
       }

@@ -16,7 +16,7 @@ define(function(require) {
         'Rice makes me full, very fast',
         'I need to eat more',
       ]);
-      expect(ideas.currentPile()).to.eq(undefined);
+      expect(ideas.currentPile()).to.eq('Misc');
     });
 
     it('registers callbacks for when ideas are recorded', function() {
@@ -40,7 +40,7 @@ define(function(require) {
       expect(ideas.currentPile()).to.eq('chicken');
     });
 
-    it('registers callbacks for when the current pile changes', function() {
+    it('registers callbacks for when a pile is selected', function() {
       var callbackCalled = 'callback called?';
       ideas.onCurrentPileChanged(function() {
         callbackCalled = true;
@@ -49,24 +49,63 @@ define(function(require) {
       expect(callbackCalled).to.be.true;
     });
 
-    it('registers callbacks for when the piles change', function() {
-      var callbackCalled = 'callback called?';
-      ideas.onPilesChanged(function() {
-        callbackCalled = true;
+    it('adds piles', function() {
+      ideas.addPile('hot trends');
+      expect(ideas.pileNames()).to.include('hot trends');
+    });
+
+    describe('onPileAdded callbacks', function() {
+      var callbackCalled;
+
+      beforeEach(function() {
+        callbackCalled = 'callback called?';
+        ideas.onPileAdded(function() {
+          callbackCalled = true;
+        });
       });
-      ideas.usePile('something new');
-      expect(callbackCalled).to.be.true;
+
+      it('execute when a new pile is used', function() {
+        ideas.usePile('something new');
+        expect(callbackCalled).to.be.true;
+      });
+
+      it('execute when a new pile is added', function() {
+        ideas.addPile('something new');
+        expect(callbackCalled).to.be.true;
+      });
+    });
+
+    describe('onPilesChanged callbacks', function() {
+      var callbackCalled;
+
+      beforeEach(function() {
+        callbackCalled = 'callback called?';
+        ideas.onPilesChanged(function() {
+          callbackCalled = true;
+        });
+      });
+
+      it('execute when a new pile is used', function() {
+        ideas.usePile('something new');
+        expect(callbackCalled).to.be.true;
+      });
+
+      it('execute when a new pile is added', function() {
+        ideas.addPile('something new');
+        expect(callbackCalled).to.be.true;
+      });
     });
 
     it('returns a list of piles', function() {
-      expect(ideas.pileNames()).to.not.be.empty;
-      //todo
-    });
+      ideas.addPile('x');
+      ideas.addPile('y');
+      ideas.addPile('z');
 
-    it('registers callbacks for when piles are changed', function() {
-      ideas.onPilesChanged(function() {
-      });
-      //todo
+      var pileNames = ideas.pileNames();
+      expect(pileNames).to.include('x');
+      expect(pileNames).to.include('y');
+      expect(pileNames).to.include('z');
+      expect(pileNames).to.include('Misc');
     });
   });
 });

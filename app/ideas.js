@@ -7,11 +7,12 @@ define(function(require) {
     var currentPile;
 
     var onIdeasChanged = Callbacks();
+    var onPileAdded = Callbacks();
     var onPilesChanged = Callbacks();
     var onCurrentPileChanged = Callbacks();
 
     var init = function() {
-      instance.usePile(undefined);
+      instance.usePile('Misc');
     };
 
     instance.record = function(idea) {
@@ -24,39 +25,17 @@ define(function(require) {
     };
 
     instance.usePile = function(pile) {
-      if (!(ideas[pile] instanceof Array)) {
-        ideas[pile] = [];
-        onPilesChanged.execute();
-      }
+      ensurePileExists(pile);
       currentPile = pile;
       onCurrentPileChanged.execute();
     };
 
+    instance.addPile = function(pile) {
+      ensurePileExists(pile);
+    };
+
     instance.pileNames = function() {
-      return [
-        undefined,
-        'chickens',
-        'sassafras',
-        'marmalade',
-        'X gundorb',
-        'speed metal',
-        'gods',
-        'television',
-        'drama',
-        'relationship advice',
-        'colon',
-        'cereal',
-        'extremism',
-        'nazis',
-        'zombies',
-        'guitar string',
-        'metal',
-        'canada',
-        'norway',
-        'scenesters',
-        'gatorang',
-        'hox',
-      ];
+      return Object.keys(ideas);
     };
 
     instance.inCurrentPile = function() {
@@ -68,8 +47,20 @@ define(function(require) {
     };
 
     instance.onIdeasChanged = onIdeasChanged.register;
+    instance.onPileAdded = onPileAdded.register;
     instance.onPilesChanged = onPilesChanged.register;
     instance.onCurrentPileChanged = onCurrentPileChanged.register;
+
+    function ensurePileExists(pile) {
+      if (typeof pile !== 'string') {
+        throw new Error('pile must be string');
+      }
+      if (!(ideas[pile] instanceof Array)) {
+        ideas[pile] = [];
+        onPileAdded.execute();
+        onPilesChanged.execute();
+      }
+    }
 
     init();
     return instance;
