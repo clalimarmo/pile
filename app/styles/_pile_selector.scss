@@ -30,6 +30,12 @@
       &.placeholder {
         color: #ccc;
       }
+      .match {
+        color: #000;
+      }
+      .non-match {
+        color: #ccc;
+      }
     }
     li.current-pile {
       margin-top: 40px;

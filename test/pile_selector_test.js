@@ -102,6 +102,13 @@ define(function(require) {
         expect(mocks.element.find('.current-pile').text()).to.include('chickens');
       });
 
+      it('distinguishes matching substrings', function() {
+        var matchingPile = $(mocks.element.find('.pile:contains(rinkydink)'));
+        var filterMatches = matchingPile.find('.match');
+        expect(filterMatches.length).to.eq(1);
+        expect(filterMatches.text()).to.eq('rink');
+      });
+
       describe('querying and pressing enter', function() {
         it('selects the only match', function() {
           Simulate.change(filter, {target: {value: 'lor'}});

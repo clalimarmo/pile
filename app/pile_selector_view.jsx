@@ -106,9 +106,28 @@ define(function(require) {
         });
         return(
           <li key={pile} onClick={component.props.choosePile(pile)} className={classes}>
-            {pile}
+            {pileText(pile)}
           </li>
         );
+      }
+
+      function pileText(pile) {
+        var filterQuery = component.state.filterQuery;
+        if (pile !== component.state.currentPile && filterQuery && filterQuery.length > 0) {
+          var nonMatchFragments = [];
+          pile.split(filterQuery).forEach(function(fragment) {
+            nonMatchFragments.push(<span className="non-match">{fragment}</span>);
+          });
+          var fragments = [];
+          var lastNonMatchIndex = nonMatchFragments.length - 1;
+          for (var i = 0; i < lastNonMatchIndex; i++) {
+            fragments.push(nonMatchFragments[i]);
+            fragments.push(<span className="match">{filterQuery}</span>);
+          }
+          fragments.push(nonMatchFragments[lastNonMatchIndex]);
+          return fragments;
+        }
+        return pile;
       }
 
       function pileMatchesFilter(pile) {
