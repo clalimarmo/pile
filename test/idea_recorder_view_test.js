@@ -5,7 +5,7 @@ define(function(require) {
   var Simulate = TestUtils.Simulate;
   var IdeaRecorderView = require('idea_recorder_view');
 
-  describe('IdeaRecorder', function() {
+  describe('IdeaRecorderView', function() {
     var mocks;
     var input;
 

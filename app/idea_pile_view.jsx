@@ -36,7 +36,7 @@ define(function(require) {
       );
 
       updateIdeas();
-      deps.ideas.onChange(updateIdeas);
+      deps.ideas.onIdeasChanged(updateIdeas);
     };
 
     var updateIdeas = function() {

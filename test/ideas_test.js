@@ -20,11 +20,22 @@ define(function(require) {
 
     it('registers callbacks for when ideas are recorded', function() {
       var callbackCalled = 'callback called?';
-      ideas.onChange(function() {
+      ideas.onIdeasChanged(function() {
         callbackCalled = true;
       });
       ideas.record('something');
       expect(callbackCalled).to.be.true;
+    });
+
+    it('returns a list of piles', function() {
+      expect(ideas.pileNames()).to.not.be.empty;
+      //todo
+    });
+
+    it('registers callbacks for when piles are changed', function() {
+      ideas.onPilesChanged(function() {
+      });
+      //todo
     });
   });
 });

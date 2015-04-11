@@ -12,7 +12,7 @@ define(function(require) {
       mocks.onChangeCallbacks = Callbacks();
       mocks.ideas = {
         all: function() { return []; },
-        onChange: mocks.onChangeCallbacks.register,
+        onIdeasChanged: mocks.onChangeCallbacks.register,
       };
 
       IdeaPileView({

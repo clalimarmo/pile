@@ -5,18 +5,31 @@ define(function(require) {
     var instance = {};
     var ideas = [];
 
-    var onChangeCallbacks = Callbacks();
+    var onIdeasChanged = Callbacks();
+    var onPilesChanged = Callbacks();
 
     instance.record = function(idea) {
       ideas.unshift(idea);
-      onChangeCallbacks.execute();
+      onIdeasChanged.execute();
     };
 
     instance.all = function() {
       return ideas;
     };
 
-    instance.onChange = onChangeCallbacks.register;
+    instance.pileNames = function() {
+      return [
+        'chickens',
+        'sassafras',
+        'marmalade',
+        'X gundorb',
+        'speed metal',
+        undefined
+      ];
+    };
+
+    instance.onIdeasChanged = onIdeasChanged.register;
+    instance.onPilesChanged = onPilesChanged.register;
 
     return instance;
   };
