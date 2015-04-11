@@ -58,6 +58,10 @@ define(function(require) {
 
       return (
         <div className="pile-selector">
+          <ul>
+            {renderPile(this.state.currentPile)}
+            {renderFilteredPiles()}
+          </ul>
           <div className="filter-container">
             <input
               className="filter"
@@ -66,10 +70,6 @@ define(function(require) {
               onChange={handleFilterChange} />
             <i className="fa fa-search"></i>
           </div>
-          <ul>
-            {renderPile(this.state.currentPile)}
-            {renderFilteredPiles()}
-          </ul>
         </div>
       );
 
@@ -80,9 +80,17 @@ define(function(require) {
           renderedPiles.push(renderPile(pile));
         });
         if (piles.length === 0) {
-          renderedPiles.push(<li className="pile placeholder">No other piles</li>);
+          renderedPiles.push(renderPlaceholder());
         }
         return renderedPiles;
+      }
+
+      function renderPlaceholder() {
+        var text = "Search to get started";
+        if (filterIsActive() && component.state.filterQuery !== component.state.currentPile) {
+          text = "Add '" + component.state.filterQuery + "'";
+        }
+        return (<li className="pile placeholder">{text}</li>);
       }
 
       function filteredPiles() {
@@ -110,8 +118,8 @@ define(function(require) {
       }
 
       function pileText(pile) {
-        var filterQuery = component.state.filterQuery;
-        if (pile !== component.state.currentPile && filterQuery && filterQuery.length > 0) {
+        if (pile !== component.state.currentPile && filterIsActive()) {
+          var filterQuery = component.state.filterQuery;
           var nonMatchFragments = [];
           pile.split(filterQuery).forEach(function(fragment) {
             nonMatchFragments.push(<span className="non-match">{fragment}</span>);
@@ -126,6 +134,11 @@ define(function(require) {
           return fragments;
         }
         return pile;
+      }
+
+      function filterIsActive() {
+        var filterQuery = component.state.filterQuery;
+        return filterQuery && filterQuery.length > 0;
       }
 
       function pileMatchesFilter(pile) {

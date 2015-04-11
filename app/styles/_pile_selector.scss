@@ -28,6 +28,7 @@
         color: #000;
       }
       &.placeholder {
+        @include justify-content(flex-end);
         color: #ccc;
       }
       .match {
@@ -64,27 +65,28 @@
     }
   }
   .filter-container {
-    $icon-width: 20px;
+    $icon-width: 30px;
 
     @include display-flex;
     border-bottom: 1px solid #eee;
-    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
     margin-bottom: 40px;
     position: relative;
     i.fa {
       @include display-flex;
       @include align-items(center);
+      @include justify-content(center);
       width: $icon-width;
       position: absolute;
-      right: 0;
+      left: 0;
       height: 100%;
       color: #666;
     }
     input {
       @include display-flex;
       background-color: transparent;
-      padding-left: 10px;
-      padding-right: $icon-width;
+      padding-right: 10px;
+      padding-left: $icon-width;
       border: none;
     }
     input:focus ~ i.fa {

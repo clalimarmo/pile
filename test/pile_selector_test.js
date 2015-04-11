@@ -34,6 +34,12 @@ define(function(require) {
       });
     });
 
+    it('prompts users to search when there are no other piles than current', function() {
+      mocks.piles = ['chickens'];
+      mocks.onPilesChanged.execute();
+      expect(mocks.element.find('.placeholder').text()).to.eq('Search to get started');
+    });
+
     it('lists initial piles', function() {
       expect(mocks.element.text()).to.include('chickens');
       expect(mocks.element.text()).to.include('Misc');
@@ -78,8 +84,8 @@ define(function(require) {
       });
 
       it('includes a placeholder when no other piles than the current match', function() {
-        Simulate.change(filter, {target: {value: 'chickens'}});
-        expect(mocks.element.text()).to.include('No other');
+        Simulate.change(filter, {target: {value: 'rumproast'}});
+        expect(mocks.element.text()).to.include("Add 'rumproast'");
         expect(mocks.element.find('.placeholder.pile').length).to.eq(1);
       });
 
