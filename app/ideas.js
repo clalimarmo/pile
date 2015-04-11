@@ -24,6 +24,23 @@ define(function(require) {
         'marmalade',
         'X gundorb',
         'speed metal',
+        'gods',
+        'television',
+        'drama',
+        'relationship advice',
+        'colon',
+        'cereal',
+        'extremism',
+        'nazis',
+        'zombies',
+        'guitar string',
+        'metal',
+        'canada',
+        'norway',
+        'scenesters',
+        'gatorang',
+        'marmalade',
+        'hox',
         undefined
       ];
     };
