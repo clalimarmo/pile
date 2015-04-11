@@ -67,6 +67,7 @@ define(function(require) {
                 className="filter"
                 value={this.state.filterQuery}
                 onKeyDown={handleFilterKeyDown}
+                onKeyUp={handleFilterKeyUp}
                 onChange={handleFilterChange} />
               <i className="fa fa-search"></i>
             </div>
@@ -93,7 +94,7 @@ define(function(require) {
 
       function renderPlaceholder() {
         var text = "Search to get started";
-        if (filterIsActive() && component.state.filterQuery !== component.state.currentPile) {
+        if (component.state.forceCreateFilterValue || filterIsActive() && component.state.filterQuery !== component.state.currentPile) {
           text = "Add '" + component.state.filterQuery + "'";
         }
         return (<li className="pile placeholder">{text}</li>);
@@ -101,7 +102,7 @@ define(function(require) {
 
       function filteredPiles() {
         var filteredPiles = [];
-        if (component.state && component.state.piles) {
+        if (!component.state.forceCreateFilterValue && component.state && component.state.piles) {
           component.state.piles.forEach(function(pile) {
             if (pileMatchesFilter(pile)) {
               filteredPiles.push(pile);
@@ -112,19 +113,15 @@ define(function(require) {
       }
 
       function renderPile(pile) {
-        var classes = React.addons.classSet({
-          'pile': component.state.currentPile !== pile,
-          'current-pile': component.state.currentPile === pile,
-        });
         return(
-          <li key={pile} onClick={component.props.choosePile(pile)} className={classes}>
+          <li key={pile} onClick={component.props.choosePile(pile)} className="pile">
             {pileText(pile)}
           </li>
         );
       }
 
       function pileText(pile) {
-        if (pile !== component.state.currentPile && filterIsActive()) {
+        if (filterIsActive()) {
           var filterQuery = component.state.filterQuery;
           var nonMatchFragments = [];
           pile.split(filterQuery).forEach(function(fragment) {
@@ -169,20 +166,32 @@ define(function(require) {
       }
 
       function handleFilterKeyDown(event) {
-        if (event.key !== 'Enter') {
-          return;
-        }
-        var query = component.state.filterQuery;
+        switch (event.key) {
+          case 'Enter':
+            var query = component.state.filterQuery;
 
-        var _filteredPiles = filteredPiles();
-        if (_filteredPiles.length > 0) {
-          var firstMatch = _filteredPiles[0]
-          component.props.choosePile(firstMatch)();
-        } else {
-          component.props.createFilterValue(query);
-        }
+            var _filteredPiles = filteredPiles();
+            if (_filteredPiles.length > 0) {
+              var firstMatch = _filteredPiles[0]
+              component.props.choosePile(firstMatch)();
+            } else {
+              component.props.createFilterValue(query);
+            }
 
-        component.setState({filterQuery: ''});
+            component.setState({filterQuery: ''});
+            break;
+          case 'Shift':
+            component.setState({forceCreateFilterValue: true});
+            break;
+        }
+      }
+
+      function handleFilterKeyUp(event) {
+        switch (event.key) {
+          case 'Shift':
+            component.setState({forceCreateFilterValue: false});
+            break;
+        }
       }
     },
   });

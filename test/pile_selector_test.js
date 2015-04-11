@@ -129,6 +129,33 @@ define(function(require) {
           expect(filter.value).to.eq('');
         });
       });
+
+      describe('shift key', function() {
+        beforeEach(function() {
+          Simulate.change(filter, {target: {value: 'lo'}});
+        });
+
+        describe('when held down', function() {
+          beforeEach(function() {
+            Simulate.keyDown(filter, {key: 'Shift'});
+          });
+
+          it('tells the user they will directly add the query term, ignoring matches', function() {
+            expect(mocks.element.find('.placeholder').text()).to.eq("Add 'lo'");
+          });
+        });
+
+        describe('when pressed and released', function() {
+          beforeEach(function() {
+            Simulate.keyDown(filter, {key: 'Shift'});
+            Simulate.keyUp(filter, {key: 'Shift'});
+          });
+
+          it('filters normally', function() {
+            expect(mocks.element.find('.placeholder').length).to.eq(0);
+          });
+        });
+      });
     });
   });
 });
