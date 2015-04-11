@@ -26,6 +26,7 @@ define(function(require) {
 
     instance.summon = function() {
       deps.element.addClass('summoned');
+      deps.element.find('input').focus();
     };
 
     instance.dismiss = function() {
@@ -58,7 +59,8 @@ define(function(require) {
     render: function() {
       return (
         <div className="pile-creator">
-          <input type="text" value={this.state.value} onKeyDown={this.props.onKeyDown} onChange={this.handleChange} />
+          <label>name this pile</label>
+          <input ref="input" type="text" value={this.state.value} onKeyDown={this.props.onKeyDown} onChange={this.handleChange} />
           <button className="dismiss" onClick={this.props.dismiss}>Cancel</button>
         </div>
       );

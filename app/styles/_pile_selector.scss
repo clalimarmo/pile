@@ -1,11 +1,28 @@
 #pile-selector {
+  $add-pile-width: 100px;
   overflow-x: auto;
   white-space: nowrap;
   position: relative;
   ul {
     list-style: none;
     padding: 0;
+    padding-right: $add-pile-width;
     text-align: center;
+    li.add-pile {
+      position: fixed;
+      right: 0;
+      width: $add-pile-width;
+      background-color: #fff;
+      display: inline-block;
+      border-bottom: 1px solid #eee;
+      border-left: 1px solid #eee;
+      padding: 5px 20px;
+      color: #33d;
+      cursor: pointer;
+      &:hover {
+        color: #000;
+      }
+    }
     li.pile {
       display: inline-block;
       padding: 5px 20px;

@@ -1,0 +1,27 @@
+#pile-creator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(#000, .8);
+  text-align: center;
+  display: none;
+  &.summoned {
+    display: block;
+  }
+
+  .pile-creator {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    label {
+      color: #fff;
+      margin: 10px;
+    }
+    input {
+      margin-right: 10px;
+    }
+  }
+
+}
