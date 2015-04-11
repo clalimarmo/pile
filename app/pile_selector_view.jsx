@@ -93,11 +93,16 @@ define(function(require) {
       }
 
       function renderPlaceholder() {
-        var text = "Search to get started";
-        if (component.state.forceCreateFilterValue || filterIsActive() && component.state.filterQuery !== component.state.currentPile) {
+        var text = (
+          <span>
+            <span>Search </span>
+            <span className="note">(Shift + Enter to add)</span>
+          </span>
+        );
+        if ((filterIsActive() && component.state.forceCreateFilterValue) || filterIsActive() && component.state.filterQuery !== component.state.currentPile) {
           text = "Add '" + component.state.filterQuery + "'";
         }
-        return (<li className="pile placeholder">{text}</li>);
+        return (<li className="pile prompt">{text}</li>);
       }
 
       function filteredPiles() {
@@ -141,7 +146,7 @@ define(function(require) {
 
       function filterIsActive() {
         var filterQuery = component.state.filterQuery;
-        return filterQuery && filterQuery.length > 0;
+        return filterQuery !== undefined && filterQuery.length > 0;
       }
 
       function pileMatchesFilter(pile) {

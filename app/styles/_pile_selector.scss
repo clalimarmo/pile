@@ -60,9 +60,13 @@
         &:hover {
           color: #000;
         }
-        &.placeholder {
+        &.prompt {
           @include justify-content(flex-end);
           color: #ccc;
+          .note {
+            font-size: .8em;
+            font-style: italic;
+          }
         }
         .match {
           color: #000;

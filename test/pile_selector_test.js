@@ -37,7 +37,7 @@ define(function(require) {
     it('prompts users to search when there are no other piles than current', function() {
       mocks.piles = ['chickens'];
       mocks.onPilesChanged.execute();
-      expect(mocks.element.find('.placeholder').text()).to.eq('Search to get started');
+      expect(mocks.element.find('.prompt').text()).to.include('Search');
     });
 
     it('lists initial piles', function() {
@@ -83,10 +83,10 @@ define(function(require) {
         expect(mocks.element.find('.pile').text()).to.include('rinkydink');
       });
 
-      it('includes a placeholder when no other piles than the current match', function() {
+      it('includes a prompt when no other piles than the current match', function() {
         Simulate.change(filter, {target: {value: 'rumproast'}});
         expect(mocks.element.text()).to.include("Add 'rumproast'");
-        expect(mocks.element.find('.placeholder.pile').length).to.eq(1);
+        expect(mocks.element.find('.prompt.pile').length).to.eq(1);
       });
 
       it('always shows the current pile', function() {
@@ -139,28 +139,51 @@ define(function(require) {
       });
 
       describe('shift key', function() {
-        beforeEach(function() {
-          Simulate.change(filter, {target: {value: 'lo'}});
-        });
-
-        describe('when held down', function() {
+        describe('when held down with a matching term', function() {
           beforeEach(function() {
+            Simulate.change(filter, {target: {value: 'lo'}});
             Simulate.keyDown(filter, {key: 'Shift'});
           });
 
           it('tells the user they will directly add the query term, ignoring matches', function() {
-            expect(mocks.element.find('.placeholder').text()).to.eq("Add 'lo'");
+            expect(mocks.element.find('.prompt').text()).to.eq("Add 'lo'");
+          });
+
+          it('creates the query term when enter is pressed', function() {
+            Simulate.keyDown(filter, {key: 'Enter'});
+            expect(mocks.chosenPile).to.eq('lo');
+          });
+        });
+
+        describe('when held down with no filter query', function() {
+          beforeEach(function() {
+            Simulate.change(filter, {target: {value: ''}});
+            Simulate.keyDown(filter, {key: 'Shift'});
+          });
+
+          it('does not tell user they will add a pile with no name', function() {
+            expect(mocks.element.find('.prompt').text()).to.not.include("Add ''");
+          });
+
+          it('does not create the query term when enter is pressed', function() {
+            expect(mocks.chosenPile).to.not.eq('lo');
           });
         });
 
         describe('when pressed and released', function() {
           beforeEach(function() {
+            Simulate.change(filter, {target: {value: 'lo'}});
             Simulate.keyDown(filter, {key: 'Shift'});
             Simulate.keyUp(filter, {key: 'Shift'});
           });
 
           it('filters normally', function() {
-            expect(mocks.element.find('.placeholder').length).to.eq(0);
+            expect(mocks.element.find('.prompt').length).to.eq(0);
+          });
+
+          it('selects the first matching pile', function() {
+            Simulate.keyDown(filter, {key: 'Enter'});
+            expect(mocks.chosenPile).to.eq('lords');
           });
         });
       });

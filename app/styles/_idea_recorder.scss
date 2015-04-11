@@ -14,5 +14,9 @@
     text-align: center;
     width: 100%;
     border: none;
+    cursor: pointer;
+    &:focus {
+      cursor: auto;
+    }
   }
 }
