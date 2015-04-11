@@ -1,13 +1,32 @@
 #pile-selector {
+  overflow-x: auto;
+  white-space: nowrap;
+  position: relative;
   ul {
     list-style: none;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 20px 50%;
+    padding: 0;
     text-align: center;
-    li {
+    li.pile {
       display: inline-block;
-      padding: 0 20px;
+      padding: 5px 20px;
+      cursor: pointer;
+      color: #666;
+      margin-bottom: 40px;
+      border-bottom: 1px solid #eee;
+      &:hover {
+        color: #000;
+      }
+      &.current-pile {
+        margin-top: 40px;
+        cursor: default;
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(#000, .75);
+        color: #fff;
+        border-bottom: none;
+        border-radius: 4px;
+      }
     }
   }
 }

@@ -12,10 +12,11 @@ define(function(require) {
       ideas.record('I need to eat more');
       ideas.record('Rice makes me full, very fast');
 
-      expect(ideas.in()).to.deep.eq([
+      expect(ideas.inCurrentPile()).to.deep.eq([
         'Rice makes me full, very fast',
         'I need to eat more',
       ]);
+      expect(ideas.currentPile()).to.eq(undefined);
     });
 
     it('registers callbacks for when ideas are recorded', function() {
@@ -36,6 +37,7 @@ define(function(require) {
         'bird food',
       ]);
       expect(ideas.inCurrentPile()).to.deep.eq(ideas.in('chicken'));
+      expect(ideas.currentPile()).to.eq('chicken');
     });
 
     it('registers callbacks for when the current pile changes', function() {

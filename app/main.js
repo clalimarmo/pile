@@ -1,7 +1,7 @@
 requirejs.config({
   paths: {
     'jquery': 'lib/jquery/dist/jquery',
-    'react': 'lib/react/react'
+    'react': 'lib/react/react-with-addons'
   },
 });
 

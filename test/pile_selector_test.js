@@ -14,11 +14,14 @@ define(function(require) {
       mocks = {};
 
       mocks.element = $('<div>');
-      mocks.piles = ['chickens', undefined];
+      mocks.piles = ['chickens', 'lords', 'rinkydink', undefined];
       mocks.onPilesChanged = Callbacks();
+      mocks.onCurrentPileChanged = Callbacks();
       mocks.ideas = {
         pileNames: function() { return mocks.piles; },
         onPilesChanged: mocks.onPilesChanged.register,
+        onCurrentPileChanged: mocks.onCurrentPileChanged.register,
+        currentPile: function() { return 'chickens'; },
         usePile: function(pileName) {
           mocks.chosenPile = pileName;
         },
@@ -48,6 +51,14 @@ define(function(require) {
       var chickenPile = normalizeElement(mocks.element.find('li:contains(chickens)'));
       Simulate.click(chickenPile);
       expect(mocks.chosenPile).to.eq('chickens');
+    });
+
+    it('distinguishes the current pile', function() {
+      mocks.ideas.currentPile = function() { return 'lords'; };
+      mocks.onCurrentPileChanged.execute();
+
+      expect(mocks.element.find('.current-pile').length).to.be.above(0);
+      expect(mocks.element.find('.current-pile').text()).to.eq('lords');
     });
   });
 });

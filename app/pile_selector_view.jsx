@@ -4,6 +4,7 @@ define(function(require) {
   var React = require('react');
 
   var MISC_KEY = 'misc-undefined-3y8241903740139287491207843912078349012374';
+  var MISC_TEXT = 'Misc';
 
   var PileSelectorView = function(deps) {
     ensure(['element', 'ideas'], deps);
@@ -23,10 +24,15 @@ define(function(require) {
 
       updatePiles();
       deps.ideas.onPilesChanged(updatePiles);
+      deps.ideas.onCurrentPileChanged(showCurrentPile);
     };
 
     function updatePiles() {
       reactElement.setState({piles: deps.ideas.pileNames()});
+    };
+
+    function showCurrentPile() {
+      reactElement.setState({currentPile: deps.ideas.currentPile()});
     };
 
     function choosePileHandler(pile) {
@@ -44,26 +50,36 @@ define(function(require) {
 
       return (
         <ul>
-          {piles()}
+          {renderPiles()}
         </ul>
       );
 
-      function piles() {
+      function renderPiles() {
         var piles = [];
         if (component.state && component.state.piles) {
           component.state.piles.forEach(function(pile) {
-            if (pile === undefined) {
-              piles.push(
-                <li key={MISC_KEY} onClick={component.props.choosePile(undefined)}>Misc</li>
-              );
-            } else {
-              piles.push(
-                <li key={pile} onClick={component.props.choosePile(pile)}>{pile}</li>
-              );
-            }
+            piles.push(renderPile(pile));
           });
         }
         return piles;
+      }
+
+      function renderPile(pile) {
+        var classes = React.addons.classSet({
+          'pile': true,
+          'current-pile': component.state.currentPile === pile,
+        });
+        var key = pile;
+        var text = pile;
+        if (pile === undefined) {
+          key = MISC_KEY;
+          text = MISC_TEXT;
+        }
+        return(
+          <li key={key} onClick={component.props.choosePile(pile)} className={classes}>
+          {text}
+          </li>
+        );
       }
     },
   });

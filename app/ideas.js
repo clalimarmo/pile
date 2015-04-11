@@ -34,6 +34,7 @@ define(function(require) {
 
     instance.pileNames = function() {
       return [
+        undefined,
         'chickens',
         'sassafras',
         'marmalade',
@@ -54,14 +55,16 @@ define(function(require) {
         'norway',
         'scenesters',
         'gatorang',
-        'marmalade',
         'hox',
-        undefined
       ];
     };
 
     instance.inCurrentPile = function() {
       return ideas[currentPile];
+    };
+
+    instance.currentPile = function() {
+      return currentPile;
     };
 
     instance.onIdeasChanged = onIdeasChanged.register;
