@@ -1,4 +1,4 @@
-.modal {
+@mixin modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -6,4 +6,19 @@
   width: 100%;
   background-color: rgba(#000, .8);
   z-index: 100;
+  text-align: center;
+  margin: auto;
+  display: none;
+}
+
+@mixin visible-modal {
+  @include display-flex;
+  @include flex-flow(row nowrap);
+  @include justify-content(center);
+  @include align-items(center);
+}
+
+@mixin modal-content {
+  background-color: #fff;
+  border-radius: 5px;
 }

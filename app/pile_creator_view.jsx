@@ -59,7 +59,7 @@ define(function(require) {
     render: function() {
       return (
         <div className="pile-creator">
-          <label>name this pile</label>
+          <label>New pile</label>
           <input ref="input" type="text" value={this.state.value} onKeyDown={this.props.onKeyDown} onChange={this.handleChange} />
           <button className="dismiss" onClick={this.props.dismiss}>Cancel</button>
         </div>

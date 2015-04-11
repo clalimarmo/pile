@@ -8,7 +8,7 @@
     @include flex(1);
     @include flex-shrink(0);
     @include align-items(stretch);
-    @include justify-content(space-around);
+    @include justify-content(flex-start);
     overflow-x: auto;
     white-space: nowrap;
     list-style: none;
