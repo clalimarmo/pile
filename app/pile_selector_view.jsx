@@ -7,7 +7,7 @@ define(function(require) {
   var MISC_TEXT = 'Misc';
 
   var PileSelectorView = function(deps) {
-    ensure(['element', 'ideas', 'pileCreator'], deps);
+    ensure(['element', 'ideas'], deps);
 
     var reactElement;
 
@@ -16,8 +16,7 @@ define(function(require) {
       var componentProps = {
         ideas: deps.ideas,
         choosePile: choosePileHandler,
-        addPile: deps.pileCreator.summon,
-        createFilterValue: deps.pileCreator.summonToCreate,
+        createFilterValue: deps.ideas.usePile,
       };
       reactElement = React.render(
         React.createElement(Component, componentProps),
@@ -71,7 +70,6 @@ define(function(require) {
             {renderPile(this.state.currentPile)}
             {renderFilteredPiles()}
           </ul>
-          <div className="add-pile" onClick={this.props.addPile}>Add Pile</div>
         </div>
       );
 

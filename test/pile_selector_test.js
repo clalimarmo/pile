@@ -27,15 +27,10 @@ define(function(require) {
         },
       };
       mocks.chosenPile = 'chosen pile';
-      mocks.pileCreator = {
-        summon: function() { mocks.pileCreator.summoned = true; },
-        summonToCreate: function(pile) { mocks.pileCreator.summonedToCreate = pile; },
-      };
 
       PileSelectorView({
         element: mocks.element,
         ideas: mocks.ideas,
-        pileCreator: mocks.pileCreator,
       });
     });
 
@@ -68,13 +63,6 @@ define(function(require) {
 
       expect(mocks.element.find('.current-pile').length).to.be.above(0);
       expect(mocks.element.find('.current-pile').text()).to.eq('lords');
-    });
-
-    it('summons its pile creator', function() {
-      mocks.pileCreator.summoned = 'summoned?';
-      var summoner = normalizeElement(mocks.element.find('.add-pile'));
-      Simulate.click(summoner);
-      expect(mocks.pileCreator.summoned).to.be.true;
     });
 
     describe('pile filtering', function() {
@@ -122,11 +110,11 @@ define(function(require) {
           expect(mocks.chosenPile).to.eq('lords');
         });
 
-        it('summons the pile creator when no matches', function() {
-          mocks.pileCreator.summonedToCreate = 'pile creator was summoned to create...';
+        it('selects the filter value as the current pile when no matches', function() {
+          mocks.chosenPile = 'chosen pile';
           Simulate.change(filter, {target: {value: 'zoro'}});
           Simulate.keyDown(filter, {key: 'Enter'});
-          expect(mocks.pileCreator.summonedToCreate).to.eq('zoro');
+          expect(mocks.chosenPile).to.eq('zoro');
         });
 
         it('clears the filter field', function() {

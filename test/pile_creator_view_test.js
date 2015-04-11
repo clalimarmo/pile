@@ -17,7 +17,7 @@ define(function(require) {
       mocks.element = $('<div>');
       mocks.onPileAdded = Callbacks();
       mocks.ideas = {
-        addPile: function(pile) {
+        usePile: function(pile) {
           mocks.ideas.addedPile = pile;
         },
         onPileAdded: mocks.onPileAdded.register,
