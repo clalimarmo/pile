@@ -27,20 +27,21 @@
       &:hover {
         color: #000;
       }
-      &.current-pile {
-        margin-top: 40px;
-        cursor: default;
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: rgba(#000, .75);
-        color: #fff;
-        border-bottom: none;
-        border-radius: 4px;
-      }
       &.placeholder {
         color: #ccc;
       }
+    }
+    li.current-pile {
+      margin-top: 40px;
+      padding: 5px 20px;
+      cursor: default;
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(#000, .75);
+      color: #fff;
+      border-bottom: none;
+      border-radius: 4px;
     }
   }
   .add-pile {

@@ -14,7 +14,7 @@ define(function(require) {
       mocks = {};
 
       mocks.element = $('<div>');
-      mocks.piles = ['chickens', 'lords', 'rinkydink', 'Misc'];
+      mocks.piles = ['chickens', 'lords', 'logs', 'rinkydink', 'Misc'];
       mocks.onPilesChanged = Callbacks();
       mocks.onCurrentPileChanged = Callbacks();
       mocks.ideas = {
@@ -29,6 +29,7 @@ define(function(require) {
       mocks.chosenPile = 'chosen pile';
       mocks.pileCreator = {
         summon: function() { mocks.pileCreator.summoned = true; },
+        summonToCreate: function(pile) { mocks.pileCreator.summonedToCreate = pile; },
       };
 
       PileSelectorView({
@@ -80,23 +81,52 @@ define(function(require) {
       var filter;
       beforeEach(function() {
         filter = normalizeElement(mocks.element.find('.filter'));
-        Simulate.change(filter, {target: {value: 'chick'}});
+        Simulate.change(filter, {target: {value: 'rink'}});
       });
 
       it('filters piles', function() {
-        expect(mocks.element.find('.pile').length).to.eq(2);
-        expect(mocks.element.find('.pile').text()).to.include('chickens');
+        expect(mocks.element.find('.pile').length).to.eq(1);
+        expect(mocks.element.find('.pile').text()).to.include('rinkydink');
       });
 
       it('includes a placeholder when no other piles than the current match', function() {
+        Simulate.change(filter, {target: {value: 'chickens'}});
+        expect(mocks.element.text()).to.include('No other');
         expect(mocks.element.find('.placeholder.pile').length).to.eq(1);
       });
 
       it('always shows the current pile', function() {
         Simulate.change(filter, {target: {value: 'lor'}});
-        expect(mocks.element.find('.pile').length).to.eq(2);
+        expect(mocks.element.find('.pile').length).to.eq(1);
         expect(mocks.element.find('.pile').text()).to.include('lords');
         expect(mocks.element.find('.current-pile').text()).to.include('chickens');
+      });
+
+      describe('querying and pressing enter', function() {
+        it('selects the only match', function() {
+          Simulate.change(filter, {target: {value: 'lor'}});
+          Simulate.keyDown(filter, {key: 'Enter'});
+          expect(mocks.chosenPile).to.eq('lords');
+        });
+
+        it('selects the first match of several', function() {
+          Simulate.change(filter, {target: {value: 'lo'}});
+          Simulate.keyDown(filter, {key: 'Enter'});
+          expect(mocks.chosenPile).to.eq('lords');
+        });
+
+        it('summons the pile creator when no matches', function() {
+          mocks.pileCreator.summonedToCreate = 'pile creator was summoned to create...';
+          Simulate.change(filter, {target: {value: 'zoro'}});
+          Simulate.keyDown(filter, {key: 'Enter'});
+          expect(mocks.pileCreator.summonedToCreate).to.eq('zoro');
+        });
+
+        it('clears the filter field', function() {
+          Simulate.change(filter, {target: {value: 'zoro'}});
+          Simulate.keyDown(filter, {key: 'Enter'});
+          expect(filter.value).to.eq('');
+        });
       });
     });
   });

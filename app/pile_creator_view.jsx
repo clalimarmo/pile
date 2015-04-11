@@ -29,6 +29,11 @@ define(function(require) {
       deps.element.find('input').focus();
     };
 
+    instance.summonToCreate = function(newPile) {
+      instance.summon();
+      reactElement.setState({value: newPile});
+    };
+
     instance.dismiss = function() {
       deps.element.removeClass('summoned');
     };

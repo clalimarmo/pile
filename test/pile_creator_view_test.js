@@ -46,6 +46,12 @@ define(function(require) {
       expect(mocks.element.hasClass('summoned')).to.be.false;
     });
 
+    it('appears, pre-filled,  when summoned to create a particular pile', function() {
+      pileCreatorView.summonToCreate('worlds');
+      expect(mocks.element.hasClass('summoned')).to.be.true;
+      expect(mocks.element.find('input').val()).to.eq('worlds');
+    });
+
     it('adds piles', function() {
       var addedPile = 'added element';
       mocks.ideas.addPile = function(pile) {

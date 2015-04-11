@@ -17,7 +17,7 @@ define(function(require) {
         ideas: deps.ideas,
         choosePile: choosePileHandler,
         addPile: deps.pileCreator.summon,
-        filter: filterPiles,
+        createFilterValue: deps.pileCreator.summonToCreate,
       };
       reactElement = React.render(
         React.createElement(Component, componentProps),
@@ -39,11 +39,6 @@ define(function(require) {
       reactElement.setState({currentPile: deps.ideas.currentPile()});
     };
 
-    function filterPiles(event) {
-      var query = event.target.value;
-      reactElement.setState({filterQuery: query});
-    };
-
     function choosePileHandler(pile) {
       return function() {
         deps.ideas.usePile(pile);
@@ -54,29 +49,39 @@ define(function(require) {
   };
 
   var Component = React.createClass({
+    getInitialState: function() {
+      return {
+        filterQuery: '',
+      };
+    },
     render: function() {
       var component = this;
 
       return (
         <div className="pile-selector">
           <div className="filter-container">
-            <input className="filter" onChange={this.props.filter} />
+            <input
+              className="filter"
+              value={this.state.filterQuery}
+              onKeyDown={handleFilterKeyDown}
+              onChange={handleFilterChange} />
             <i className="fa fa-search"></i>
           </div>
           <ul>
-            {renderPiles()}
+            {renderPile(this.state.currentPile)}
+            {renderFilteredPiles()}
           </ul>
           <div className="add-pile" onClick={this.props.addPile}>Add Pile</div>
         </div>
       );
 
-      function renderPiles() {
+      function renderFilteredPiles() {
         var renderedPiles = [];
-        var piles = filteredPiles();;
+        var piles = filteredPiles();
         piles.forEach(function(pile) {
           renderedPiles.push(renderPile(pile));
         });
-        if (piles.length === 1) {
+        if (piles.length === 0) {
           renderedPiles.push(<li className="pile placeholder">No other piles</li>);
         }
         return renderedPiles;
@@ -96,7 +101,7 @@ define(function(require) {
 
       function renderPile(pile) {
         var classes = React.addons.classSet({
-          'pile': true,
+          'pile': component.state.currentPile !== pile,
           'current-pile': component.state.currentPile === pile,
         });
         return(
@@ -107,10 +112,41 @@ define(function(require) {
       }
 
       function pileMatchesFilter(pile) {
-        if (!component.state.filterQuery || component.state.filterQuery.length === 0 || component.state.currentPile === pile) {
-          return true;
+        return (
+          // current pile is treated separately
+          pile !== component.state.currentPile
+
+          && (
+            // without a filter query, all other piles match
+            !component.state.filterQuery
+            || component.state.filterQuery.length === 0
+
+            // with a filter query, if the pile includes the query, it matches
+            || pile.indexOf(component.state.filterQuery) > -1
+          )
+        );
+      }
+
+      function handleFilterChange(event) {
+        var query = event.target.value;
+        component.setState({filterQuery: query});
+      }
+
+      function handleFilterKeyDown(event) {
+        if (event.key !== 'Enter') {
+          return;
         }
-        return pile.indexOf(component.state.filterQuery) > -1;
+        var query = component.state.filterQuery;
+
+        var _filteredPiles = filteredPiles();
+        if (_filteredPiles.length > 0) {
+          var firstMatch = _filteredPiles[0]
+          component.props.choosePile(firstMatch)();
+        } else {
+          component.props.createFilterValue(query);
+        }
+
+        component.setState({filterQuery: ''});
       }
     },
   });
