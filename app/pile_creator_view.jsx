@@ -13,7 +13,7 @@ define(function(require) {
       var container = normalizeElement(deps.element);
 
       var componentProps = {
-        onKeyDown: createPileIfEnter,
+        createPile: deps.ideas.addPile,
         dismiss: instance.dismiss,
       };
       reactElement = React.render(
@@ -38,14 +38,6 @@ define(function(require) {
       deps.element.removeClass('summoned');
     };
 
-    function createPileIfEnter(event) {
-      var input = event.target;
-      var pile = input.value;
-      if (event.key === 'Enter') {
-        deps.ideas.addPile(pile);
-      }
-    }
-
     function reset() {
       reactElement.setState({value: ''});
       instance.dismiss();
@@ -62,16 +54,32 @@ define(function(require) {
       };
     },
     render: function() {
+      var component = this;
+
       return (
         <div className="pile-creator">
           <label>New pile</label>
-          <input ref="input" type="text" value={this.state.value} onKeyDown={this.props.onKeyDown} onChange={this.handleChange} />
+          <input ref="input" type="text" value={this.state.value} onKeyDown={handleKeyDown} onChange={handleChange} />
           <button className="dismiss" onClick={this.props.dismiss}>Cancel</button>
         </div>
       );
-    },
-    handleChange: function(event) {
-      this.setState({value: event.target.value});
+
+      function handleChange(event) {
+        component.setState({value: event.target.value});
+      }
+
+      function handleKeyDown(event) {
+        var input = event.target;
+        var pile = input.value;
+        switch (event.key) {
+          case 'Enter':
+            component.props.createPile(pile);
+            break;
+          case 'Escape':
+            component.props.dismiss();
+            break;
+        }
+      }
     },
   });
 

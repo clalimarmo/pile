@@ -17,7 +17,9 @@ define(function(require) {
       mocks.element = $('<div>');
       mocks.onPileAdded = Callbacks();
       mocks.ideas = {
-        addPile: function() {},
+        addPile: function(pile) {
+          mocks.ideas.addedPile = pile;
+        },
         onPileAdded: mocks.onPileAdded.register,
       };
 
@@ -46,6 +48,12 @@ define(function(require) {
       expect(mocks.element.hasClass('summoned')).to.be.false;
     });
 
+    it('can be dismissed with the Escape key', function() {
+      mocks.element.addClass('summoned');
+      Simulate.keyDown(input, {key: 'Escape'});
+      expect(mocks.element.hasClass('summoned')).to.be.false;
+    });
+
     it('appears, pre-filled,  when summoned to create a particular pile', function() {
       pileCreatorView.summonToCreate('worlds');
       expect(mocks.element.hasClass('summoned')).to.be.true;
@@ -53,14 +61,10 @@ define(function(require) {
     });
 
     it('adds piles', function() {
-      var addedPile = 'added element';
-      mocks.ideas.addPile = function(pile) {
-        addedPile = pile;
-      };
-
+      mocks.ideas.addedPile = 'added element';
       input.value = 'liverwurst';
       Simulate.keyDown(input, {key: 'Enter'});
-      expect(addedPile).to.eq('liverwurst');
+      expect(mocks.ideas.addedPile).to.eq('liverwurst');
     });
 
     it('resets when a pile is added', function() {
