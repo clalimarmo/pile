@@ -17,6 +17,8 @@
     li.pile {
       @include display-flex;
       @include flex-shrink(0);
+      @include flex-grow(1);
+      @include justify-content(center);
       padding: 5px 20px;
       cursor: pointer;
       color: #666;
@@ -36,13 +38,14 @@
         border-bottom: none;
         border-radius: 4px;
       }
+      &.placeholder {
+        color: #ccc;
+      }
     }
   }
   .add-pile {
     @include display-flex;
-    right: 0;
     background-color: #fff;
-    display: inline-block;
     border-bottom: 1px solid #eee;
     border-left: 1px solid #eee;
     padding: 5px 20px;
@@ -50,6 +53,34 @@
     color: #33d;
     cursor: pointer;
     &:hover {
+      color: #000;
+    }
+  }
+  .filter-container {
+    $icon-width: 20px;
+
+    @include display-flex;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+    margin-bottom: 40px;
+    position: relative;
+    i.fa {
+      @include display-flex;
+      @include align-items(center);
+      width: $icon-width;
+      position: absolute;
+      right: 0;
+      height: 100%;
+      color: #666;
+    }
+    input {
+      @include display-flex;
+      background-color: transparent;
+      padding-left: 10px;
+      padding-right: $icon-width;
+      border: none;
+    }
+    input:focus ~ i.fa {
       color: #000;
     }
   }

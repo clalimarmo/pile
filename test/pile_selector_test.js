@@ -75,5 +75,29 @@ define(function(require) {
       Simulate.click(summoner);
       expect(mocks.pileCreator.summoned).to.be.true;
     });
+
+    describe('pile filtering', function() {
+      var filter;
+      beforeEach(function() {
+        filter = normalizeElement(mocks.element.find('.filter'));
+        Simulate.change(filter, {target: {value: 'chick'}});
+      });
+
+      it('filters piles', function() {
+        expect(mocks.element.find('.pile').length).to.eq(2);
+        expect(mocks.element.find('.pile').text()).to.include('chickens');
+      });
+
+      it('includes a placeholder when no other piles than the current match', function() {
+        expect(mocks.element.find('.placeholder.pile').length).to.eq(1);
+      });
+
+      it('always shows the current pile', function() {
+        Simulate.change(filter, {target: {value: 'lor'}});
+        expect(mocks.element.find('.pile').length).to.eq(2);
+        expect(mocks.element.find('.pile').text()).to.include('lords');
+        expect(mocks.element.find('.current-pile').text()).to.include('chickens');
+      });
+    });
   });
 });

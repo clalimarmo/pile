@@ -6,6 +6,10 @@
   -webkit-flex: $val;
   flex: $val;
 }
+@mixin flex-grow($val) {
+  -webkit-flex-grow: $val;
+  flex-grow: $val;
+}
 @mixin flex-flow($val) {
   -webkit-flex-flow: $val;
   flex-flow: $val;

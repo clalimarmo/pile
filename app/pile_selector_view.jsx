@@ -17,6 +17,7 @@ define(function(require) {
         ideas: deps.ideas,
         choosePile: choosePileHandler,
         addPile: deps.pileCreator.summon,
+        filter: filterPiles,
       };
       reactElement = React.render(
         React.createElement(Component, componentProps),
@@ -38,6 +39,11 @@ define(function(require) {
       reactElement.setState({currentPile: deps.ideas.currentPile()});
     };
 
+    function filterPiles(event) {
+      var query = event.target.value;
+      reactElement.setState({filterQuery: query});
+    };
+
     function choosePileHandler(pile) {
       return function() {
         deps.ideas.usePile(pile);
@@ -53,6 +59,10 @@ define(function(require) {
 
       return (
         <div className="pile-selector">
+          <div className="filter-container">
+            <input className="filter" onChange={this.props.filter} />
+            <i className="fa fa-search"></i>
+          </div>
           <ul>
             {renderPiles()}
           </ul>
@@ -61,13 +71,27 @@ define(function(require) {
       );
 
       function renderPiles() {
-        var piles = [];
+        var renderedPiles = [];
+        var piles = filteredPiles();;
+        piles.forEach(function(pile) {
+          renderedPiles.push(renderPile(pile));
+        });
+        if (piles.length === 1) {
+          renderedPiles.push(<li className="pile placeholder">No other piles</li>);
+        }
+        return renderedPiles;
+      }
+
+      function filteredPiles() {
+        var filteredPiles = [];
         if (component.state && component.state.piles) {
           component.state.piles.forEach(function(pile) {
-            piles.push(renderPile(pile));
+            if (pileMatchesFilter(pile)) {
+              filteredPiles.push(pile);
+            }
           });
         }
-        return piles;
+        return filteredPiles;
       }
 
       function renderPile(pile) {
@@ -80,6 +104,13 @@ define(function(require) {
             {pile}
           </li>
         );
+      }
+
+      function pileMatchesFilter(pile) {
+        if (!component.state.filterQuery || component.state.filterQuery.length === 0 || component.state.currentPile === pile) {
+          return true;
+        }
+        return pile.indexOf(component.state.filterQuery) > -1;
       }
     },
   });
