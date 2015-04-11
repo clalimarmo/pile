@@ -57,21 +57,27 @@ define(function(require) {
       var component = this;
 
       return (
-        <div className="pile-selector">
-          <ul>
-            {renderPile(this.state.currentPile)}
-            {renderFilteredPiles()}
-          </ul>
-          <div className="filter-container">
-            <input
-              className="filter"
-              value={this.state.filterQuery}
-              onKeyDown={handleFilterKeyDown}
-              onChange={handleFilterChange} />
-            <i className="fa fa-search"></i>
+        <div className="component-root">
+          <div className="selector">
+            <ul>
+              {renderFilteredPiles()}
+            </ul>
+            <div className="filter-container">
+              <input
+                className="filter"
+                value={this.state.filterQuery}
+                onKeyDown={handleFilterKeyDown}
+                onChange={handleFilterChange} />
+              <i className="fa fa-search"></i>
+            </div>
           </div>
+          {renderCurrentPile()}
         </div>
       );
+
+      function renderCurrentPile() {
+        return (<h1 className="current-pile">{component.state.currentPile}</h1>);
+      }
 
       function renderFilteredPiles() {
         var renderedPiles = [];

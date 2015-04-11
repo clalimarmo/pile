@@ -54,9 +54,9 @@ define(function(require) {
     });
 
     it('chooses piles', function() {
-      var chickenPile = normalizeElement(mocks.element.find('li:contains(chickens)'));
+      var chickenPile = normalizeElement(mocks.element.find('li:contains(lords)'));
       Simulate.click(chickenPile);
-      expect(mocks.chosenPile).to.eq('chickens');
+      expect(mocks.chosenPile).to.eq('lords');
     });
 
     it('distinguishes the initial current pile', function() {
