@@ -14,7 +14,7 @@ define(function(require) {
       mocks = {};
 
       mocks.element = $('<div>');
-      mocks.piles = ['Chickens', 'Lords', 'Logs', 'Rinkydink', 'Misc'];
+      mocks.piles = ['Chickens', 'Lords', 'Logs', 'Rinkydink', 'Misc', 'Mississippi'];
       mocks.onPilesChanged = Callbacks();
       mocks.onCurrentPileChanged = Callbacks();
       mocks.ideas = {
@@ -97,10 +97,11 @@ define(function(require) {
       });
 
       it('distinguishes matching substrings', function() {
-        var matchingPile = $(mocks.element.find('.pile:contains(Rinkydink)'));
+        Simulate.change(filter, {target: {value: 'ss'}});
+        var matchingPile = $(mocks.element.find('.pile:contains(Mississippi)'));
         var filterMatches = matchingPile.find('.match');
-        expect(filterMatches.length).to.eq(1);
-        expect(filterMatches.text()).to.eq('Rink');
+        expect(filterMatches.length).to.eq(2);
+        expect(filterMatches.text()).to.include('ss');
       });
 
       it('distinguishes matching substrings in the current pile', function() {

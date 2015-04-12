@@ -128,7 +128,7 @@ define(function(require) {
       function renderPileText(pile) {
         if (filterIsActive()) {
           var filterQuery = component.state.filterQuery;
-          var filter = new RegExp(filterQuery, 'i');
+          var filter = new RegExp(filterQuery, 'ig');
           var nonMatches = [];
           pile.split(filter).forEach(function(fragment) {
             nonMatches.push(<span className="non-match">{fragment}</span>);
