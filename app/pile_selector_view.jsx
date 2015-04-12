@@ -69,7 +69,7 @@ define(function(require) {
                 onKeyDown={handleFilterKeyDown}
                 onKeyUp={handleFilterKeyUp}
                 onChange={handleFilterChange} />
-              <i className="fa fa-search"></i>
+              {renderInputIcon()}
             </div>
           </div>
           {renderCurrentPile()}
@@ -99,10 +99,22 @@ define(function(require) {
             <span className="note">(Shift + Enter to add)</span>
           </span>
         );
-        if ((filterIsActive() && component.state.forceCreateFilterValue) || filterIsActive() && component.state.filterQuery !== component.state.currentPile) {
+        if (filterWillAddQuery()) {
           text = "Add '" + component.state.filterQuery + "'";
         }
         return (<li className="pile prompt">{text}</li>);
+      }
+
+      function filterWillAddQuery() {
+        return (filterIsActive() && component.state.forceCreateFilterValue) || filterIsActive() && component.state.filterQuery !== component.state.currentPile;
+      }
+
+      function renderInputIcon() {
+        var className = "fa fa-search";
+        if (filterWillAddQuery()) {
+          className = "fa fa-plus";
+        }
+        return (<i className={className}></i>);
       }
 
       function filteredPiles() {
