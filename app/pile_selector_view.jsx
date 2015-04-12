@@ -77,7 +77,7 @@ define(function(require) {
       );
 
       function renderCurrentPile() {
-        return (<h1 className="current-pile">{pileText(component.state.currentPile)}</h1>);
+        return (<h1 className="current-pile">{renderPileText(component.state.currentPile)}</h1>);
       }
 
       function renderFilteredPiles() {
@@ -120,12 +120,12 @@ define(function(require) {
       function renderPile(pile) {
         return(
           <li key={pile} onClick={component.props.choosePile(pile)} className="pile">
-            {pileText(pile)}
+            {renderPileText(pile)}
           </li>
         );
       }
 
-      function pileText(pile) {
+      function renderPileText(pile) {
         if (filterIsActive()) {
           var filterQuery = component.state.filterQuery;
           var filter = new RegExp(filterQuery, 'i');
