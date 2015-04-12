@@ -87,12 +87,12 @@ define(function(require) {
           renderedPiles.push(renderPile(pile));
         });
         if (piles.length === 0) {
-          renderedPiles.push(renderPlaceholder());
+          renderedPiles.push(renderPrompt());
         }
         return renderedPiles;
       }
 
-      function renderPlaceholder() {
+      function renderPrompt() {
         var text = (
           <span>
             <span>Search </span>
@@ -105,16 +105,19 @@ define(function(require) {
         return (<li className="pile prompt">{text}</li>);
       }
 
-      function filterWillAddQuery() {
-        return (filterIsActive() && component.state.forceCreateFilterValue) || filterIsActive() && component.state.filterQuery !== component.state.currentPile;
-      }
-
       function renderInputIcon() {
         var className = "fa fa-search";
         if (filterWillAddQuery()) {
           className = "fa fa-plus";
         }
         return (<i className={className}></i>);
+      }
+
+      function filterWillAddQuery() {
+        return (
+          (filterIsActive() && component.state.forceCreateFilterValue)
+          || (filterIsActive() && filteredPiles().length === 0)
+        );
       }
 
       function filteredPiles() {

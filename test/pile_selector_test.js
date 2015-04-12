@@ -86,7 +86,12 @@ define(function(require) {
       it('includes a prompt when no other piles than the current match', function() {
         Simulate.change(filter, {target: {value: 'rumproast'}});
         expect(mocks.element.text()).to.include("Add 'rumproast'");
-        expect(mocks.element.find('.prompt.pile').length).to.eq(1);
+        expect(mocks.element.find('.prompt').length).to.eq(1);
+      });
+
+      it('does not prompt to add the pile if there are filter matches', function() {
+        expect(mocks.element.find('.prompt').length).to.eq(0);
+        expect(mocks.element.find('.fa').hasClass('fa-plus')).to.be.false;
       });
 
       it('always shows the current pile', function() {
