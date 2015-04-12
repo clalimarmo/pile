@@ -14,14 +14,14 @@ define(function(require) {
       mocks = {};
 
       mocks.element = $('<div>');
-      mocks.piles = ['chickens', 'lords', 'logs', 'rinkydink', 'Misc'];
+      mocks.piles = ['Chickens', 'Lords', 'Logs', 'Rinkydink', 'Misc'];
       mocks.onPilesChanged = Callbacks();
       mocks.onCurrentPileChanged = Callbacks();
       mocks.ideas = {
         pileNames: function() { return mocks.piles; },
         onPilesChanged: mocks.onPilesChanged.register,
         onCurrentPileChanged: mocks.onCurrentPileChanged.register,
-        currentPile: function() { return 'chickens'; },
+        currentPile: function() { return 'Chickens'; },
         usePile: function(pileName) {
           mocks.chosenPile = pileName;
         },
@@ -35,40 +35,40 @@ define(function(require) {
     });
 
     it('prompts users to search when there are no other piles than current', function() {
-      mocks.piles = ['chickens'];
+      mocks.piles = ['Chickens'];
       mocks.onPilesChanged.execute();
       expect(mocks.element.find('.prompt').text()).to.include('Search');
     });
 
     it('lists initial piles', function() {
-      expect(mocks.element.text()).to.include('chickens');
+      expect(mocks.element.text()).to.include('Chickens');
       expect(mocks.element.text()).to.include('Misc');
     });
 
     it('updates list of piles', function() {
-      mocks.piles = ['latest thoughts', 'Misc', 'chickens'];
+      mocks.piles = ['latest thoughts', 'Misc', 'Chickens'];
       mocks.onPilesChanged.execute();
       expect(mocks.element.text()).to.include('latest thoughts');
-      expect(mocks.element.text()).to.include('chickens');
+      expect(mocks.element.text()).to.include('Chickens');
       expect(mocks.element.text()).to.include('Misc');
     });
 
     it('chooses piles', function() {
-      var chickenPile = normalizeElement(mocks.element.find('li:contains(lords)'));
+      var chickenPile = normalizeElement(mocks.element.find('li:contains(Lords)'));
       Simulate.click(chickenPile);
-      expect(mocks.chosenPile).to.eq('lords');
+      expect(mocks.chosenPile).to.eq('Lords');
     });
 
     it('distinguishes the initial current pile', function() {
-      expect(mocks.element.find('.current-pile').text()).to.eq('chickens');
+      expect(mocks.element.find('.current-pile').text()).to.eq('Chickens');
     });
 
     it('distinguishes the current pile when it changes', function() {
-      mocks.ideas.currentPile = function() { return 'lords'; };
+      mocks.ideas.currentPile = function() { return 'Lords'; };
       mocks.onCurrentPileChanged.execute();
 
       expect(mocks.element.find('.current-pile').length).to.be.above(0);
-      expect(mocks.element.find('.current-pile').text()).to.eq('lords');
+      expect(mocks.element.find('.current-pile').text()).to.eq('Lords');
     });
 
     describe('pile filtering', function() {
@@ -80,7 +80,7 @@ define(function(require) {
 
       it('filters piles', function() {
         expect(mocks.element.find('.pile').length).to.eq(1);
-        expect(mocks.element.find('.pile').text()).to.include('rinkydink');
+        expect(mocks.element.find('.pile').text()).to.include('Rinkydink');
       });
 
       it('includes a prompt when no other piles than the current match', function() {
@@ -92,15 +92,15 @@ define(function(require) {
       it('always shows the current pile', function() {
         Simulate.change(filter, {target: {value: 'lor'}});
         expect(mocks.element.find('.pile').length).to.eq(1);
-        expect(mocks.element.find('.pile').text()).to.include('lords');
-        expect(mocks.element.find('.current-pile').text()).to.include('chickens');
+        expect(mocks.element.find('.pile').text()).to.include('Lords');
+        expect(mocks.element.find('.current-pile').text()).to.include('Chickens');
       });
 
       it('distinguishes matching substrings', function() {
-        var matchingPile = $(mocks.element.find('.pile:contains(rinkydink)'));
+        var matchingPile = $(mocks.element.find('.pile:contains(Rinkydink)'));
         var filterMatches = matchingPile.find('.match');
         expect(filterMatches.length).to.eq(1);
-        expect(filterMatches.text()).to.eq('rink');
+        expect(filterMatches.text()).to.eq('Rink');
       });
 
       it('distinguishes matching substrings in the current pile', function() {
@@ -108,20 +108,20 @@ define(function(require) {
         var currentPile = $(mocks.element.find('.current-pile'));
         var filterMatches = currentPile.find('.match');
         expect(filterMatches.length).to.eq(1);
-        expect(filterMatches.text()).to.eq('chi');
+        expect(filterMatches.text()).to.eq('Chi');
       });
 
       describe('querying and pressing enter', function() {
         it('selects the only match', function() {
           Simulate.change(filter, {target: {value: 'lor'}});
           Simulate.keyDown(filter, {key: 'Enter'});
-          expect(mocks.chosenPile).to.eq('lords');
+          expect(mocks.chosenPile).to.eq('Lords');
         });
 
         it('selects the first match of several', function() {
           Simulate.change(filter, {target: {value: 'lo'}});
           Simulate.keyDown(filter, {key: 'Enter'});
-          expect(mocks.chosenPile).to.eq('lords');
+          expect(mocks.chosenPile).to.eq('Lords');
         });
 
         it('selects the filter value as the current pile when no matches', function() {
@@ -183,7 +183,7 @@ define(function(require) {
 
           it('selects the first matching pile', function() {
             Simulate.keyDown(filter, {key: 'Enter'});
-            expect(mocks.chosenPile).to.eq('lords');
+            expect(mocks.chosenPile).to.eq('Lords');
           });
         });
       });

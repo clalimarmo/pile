@@ -128,17 +128,19 @@ define(function(require) {
       function pileText(pile) {
         if (filterIsActive()) {
           var filterQuery = component.state.filterQuery;
-          var nonMatchFragments = [];
-          pile.split(filterQuery).forEach(function(fragment) {
-            nonMatchFragments.push(<span className="non-match">{fragment}</span>);
+          var filter = new RegExp(filterQuery, 'i');
+          var nonMatches = [];
+          pile.split(filter).forEach(function(fragment) {
+            nonMatches.push(<span className="non-match">{fragment}</span>);
           });
+          var matches = pile.match(filter);
           var fragments = [];
-          var lastNonMatchIndex = nonMatchFragments.length - 1;
+          var lastNonMatchIndex = nonMatches.length - 1;
           for (var i = 0; i < lastNonMatchIndex; i++) {
-            fragments.push(nonMatchFragments[i]);
-            fragments.push(<span className="match">{filterQuery}</span>);
+            fragments.push(nonMatches[i]);
+            fragments.push(<span className="match">{matches[i]}</span>);
           }
-          fragments.push(nonMatchFragments[lastNonMatchIndex]);
+          fragments.push(nonMatches[lastNonMatchIndex]);
           return fragments;
         }
         return pile;
@@ -150,6 +152,8 @@ define(function(require) {
       }
 
       function pileMatchesFilter(pile) {
+        var filterQuery = component.state.filterQuery;
+        var filter = new window.RegExp(filterQuery, 'i');
         return (
           // current pile is treated separately
           pile !== component.state.currentPile
@@ -160,7 +164,7 @@ define(function(require) {
             || component.state.filterQuery.length === 0
 
             // with a filter query, if the pile includes the query, it matches
-            || pile.indexOf(component.state.filterQuery) > -1
+            || filter.test(pile)
           )
         );
       }
