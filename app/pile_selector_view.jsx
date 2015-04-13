@@ -68,6 +68,7 @@ define(function(require) {
                 value={this.state.filterQuery}
                 onKeyDown={handleFilterKeyDown}
                 onKeyUp={handleFilterKeyUp}
+                onBlur={handleFilterBlur}
                 onChange={handleFilterChange} />
               {renderInputIcon()}
             </div>
@@ -216,6 +217,10 @@ define(function(require) {
             component.setState({forceCreateFilterValue: false});
             break;
         }
+      }
+
+      function handleFilterBlur() {
+        component.setState({forceCreateFilterValue: false});
       }
     },
   });

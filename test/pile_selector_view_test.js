@@ -192,6 +192,18 @@ define(function(require) {
             expect(mocks.chosenPile).to.eq('Lords');
           });
         });
+
+        describe('when pressed and then the filter loses focus', function() {
+          beforeEach(function() {
+            Simulate.change(filter, {target: {value: 'lo'}});
+            Simulate.keyDown(filter, {key: 'Shift'});
+            Simulate.blur(filter);
+          });
+
+          it('filters normally', function() {
+            expect(mocks.element.find('.prompt').length).to.eq(0);
+          });
+        });
       });
     });
   });
