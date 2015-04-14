@@ -15,7 +15,7 @@ define(function(require) {
   var ideas = Ideas();
 
   $(function() {
-    IdeaRecorderView({
+    var ideaRecorderView = IdeaRecorderView({
       element: $('#idea-recorder'),
       ideas: ideas,
     });
@@ -27,5 +27,7 @@ define(function(require) {
       element: $('#idea-pile'),
       ideas: ideas,
     });
+
+    ideaRecorderView.focus();
   });
 });

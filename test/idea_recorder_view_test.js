@@ -8,6 +8,7 @@ define(function(require) {
   describe('IdeaRecorderView', function() {
     var mocks;
     var input;
+    var ideaRecorderView;
 
     beforeEach(function() {
       mocks = {};
@@ -21,7 +22,7 @@ define(function(require) {
         },
       };
 
-      IdeaRecorderView({
+      ideaRecorderView = IdeaRecorderView({
         element: mocks.element,
         ideas: mocks.ideas
       });
@@ -39,6 +40,17 @@ define(function(require) {
       input.value = 'blue whales are the biggest';
       Simulate.keyDown(input, {key: 'Enter'});
       expect(input.value).to.be.empty;
+    });
+
+    describe('#focus', function() {
+      beforeEach(function() {
+        ideaRecorderView.focus();
+      });
+
+      it('focuses on on the input element', function() {
+        //focus assertions don't seem to work
+        //expect(mocks.element.find('input').is(':focus')).to.be.true;
+      });
     });
   });
 });

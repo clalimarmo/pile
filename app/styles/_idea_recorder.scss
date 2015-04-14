@@ -15,8 +15,11 @@
     text-align: center;
     cursor: pointer;
     border-radius: 4px;
-    border: 1px solid #eee;
+    border: none;
+    border-bottom: 1px solid #eee;
     &:focus {
+      outline: none;
+      border-color: transparent;
       cursor: auto;
       width: 100%;
     }

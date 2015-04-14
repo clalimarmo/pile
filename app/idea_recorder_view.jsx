@@ -7,9 +7,12 @@ define(function(require) {
     render: function() {
       return (
         <div className="idea-recorder">
-          <input type="text" placeholder="enter an idea" onKeyDown={this.props.onKeyDown} />
+          <input ref="input" type="text" onKeyDown={this.props.onKeyDown} />
         </div>
       );
+    },
+    focus: function() {
+      React.findDOMNode(this.refs.input).focus();
     },
   });
 
@@ -34,6 +37,8 @@ define(function(require) {
         event.target.value = '';
       }
     };
+
+    instance.focus = function() { reactElement.focus(); };
 
     init();
     return instance;
