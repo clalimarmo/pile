@@ -5,11 +5,12 @@
     @include display-flex;
     @include flex(1);
     @include flex-flow(column nowrap);
-    @include align-items(center);
+    @include align-items(stretch);
     overflow: auto;
     .idea {
       @include display-flex;
       @include flex-shrink(0);
+      @include justify-content(center);
       padding: 10px;
     }
   }
