@@ -20,6 +20,13 @@ define(function(require) {
       onIdeasChanged.execute();
     };
 
+    instance.reorderIdea = function(subject, target) {
+      var toMove = ideas[currentPile][subject];
+      ideas[currentPile].splice(subject, 1);
+      ideas[currentPile].splice(target, 0, toMove);
+      onIdeasChanged.execute();
+    };
+
     instance.in = function(pile) {
       return ideas[pile];
     };

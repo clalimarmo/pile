@@ -19,15 +19,6 @@ define(function(require) {
       expect(ideas.currentPile()).to.eq('Misc');
     });
 
-    it('registers callbacks for when ideas are recorded', function() {
-      var callbackCalled = 'callback called?';
-      ideas.onIdeasChanged(function() {
-        callbackCalled = true;
-      });
-      ideas.record('something');
-      expect(callbackCalled).to.be.true;
-    });
-
     it('selects piles for recording ideas', function() {
       ideas.usePile('chicken');
       ideas.record('bird food');
@@ -38,6 +29,32 @@ define(function(require) {
       ]);
       expect(ideas.inCurrentPile()).to.deep.eq(ideas.in('chicken'));
       expect(ideas.currentPile()).to.eq('chicken');
+    });
+
+    describe('reordering ideas', function() {
+      beforeEach(function() {
+        ideas.record('third');
+        ideas.record('first');
+        ideas.record('second');
+      });
+
+      it('moves ideas "up"', function() {
+        ideas.reorderIdea(1, 0);
+        expect(ideas.inCurrentPile()).to.deep.eq([
+          'first',
+          'second',
+          'third'
+        ]);
+      });
+
+      it('moves ideas "down"', function() {
+        ideas.reorderIdea(0, 1);
+        expect(ideas.inCurrentPile()).to.deep.eq([
+          'first',
+          'second',
+          'third'
+        ]);
+      });
     });
 
     it('registers callbacks for when a pile is selected', function() {
@@ -71,6 +88,29 @@ define(function(require) {
 
       it('execute when a new pile is added', function() {
         ideas.addPile('something new');
+        expect(callbackCalled).to.be.true;
+      });
+    });
+
+    describe('onIdeasChanged callbacks', function() {
+      var callbackCalled = 'callback called?';
+
+      beforeEach(function() {
+        ideas.record('something');
+        ideas.record('something else');
+        callbackCalled = 'callback called?';
+        ideas.onIdeasChanged(function() {
+          callbackCalled = true;
+        });
+      });
+
+      it('execute when ideas are recorded', function() {
+        ideas.record('something');
+        expect(callbackCalled).to.be.true;
+      });
+
+      it('execute when ideas are reordered', function() {
+        ideas.reorderIdea(0, 1);
         expect(callbackCalled).to.be.true;
       });
     });
